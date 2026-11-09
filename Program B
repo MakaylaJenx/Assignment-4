@@ -1,0 +1,40 @@
+# Program Name: Assignment4.py (use the name the program is saved as)
+# Course: IT3883/Section 01
+# Student Name: Makayla Jenkins
+# Assignment Number: Lab4
+# Due Date: 11/06/ 2026
+# Purpose: The server side of the network connection that will echo the sent message from Server A back in all capital letters
+
+
+import socket
+
+# Set the server IP address and port number
+HOST = '127.0.0.1'  # Localhost (same computer)
+PORT = 45000
+
+# Create a TCP socket
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Bind the socket to the IP address and port
+server_socket.bind((HOST, PORT))
+
+# Listen for incoming connections
+server_socket.listen(1)
+print("Program B is waiting for a connection...")
+
+# Accept a connection from Program A
+connection, address = server_socket.accept()
+print("Connected to:", address)
+
+# Receive the message from Program A
+message = connection.recv(1024).decode()
+
+# Convert the received message to uppercase
+uppercase_message = message.upper()
+
+# Send the uppercase message back to Program A
+connection.sendall(uppercase_message.encode())
+
+# Close the connection and server socket
+connection.close()
+server_socket.close()
